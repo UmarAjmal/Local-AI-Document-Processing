@@ -1,0 +1,26 @@
+{
+  "jnkdnasj.pdf": {
+    "class": "Invoice",
+    "invoice_number": "INV-000215",
+    "date": "29-Jan-2026",
+    "company": "LOGO MY POS SYSTEM",
+    "total_amount": 3392082.0
+  },
+  "M. Umar Ajmal Resume.pdf": {
+    "class": "Resume",
+    "name": "MUHAMMAD UMAR AJMAL",
+    "email": "umarajmaldeveloper@gmail.com",
+    "phone": "+92-305-901-7768",
+    "experience_years": 1
+  },
+  "nskqwjn.pdf": {
+    "class": "Invoice",
+    "invoice_number": "INV-000216",
+    "date": "29-Jan-2026",
+    "company": "BEYOND BEAUTY PHARMACY",
+    "total_amount": 3263392082.0
+  },
+  "Transcript.pdf": {
+    "class": "Other"
+  }
+}
