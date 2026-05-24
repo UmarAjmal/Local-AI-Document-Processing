@@ -7,7 +7,7 @@ A complete document intelligence system that ingests PDFs and text files, classi
 ---
 
 ## 📌 Demo Video Link
-https://drive.google.com/file/d/1ovvkGNhFq_BQKiF73qqK37hyeOIdKfgl/view?usp=sharing
+https://drive.google.com/file/d/1ox5C-ImIz8q7DkobAQwWwGvq9PLhn6zS/view?usp=sharing
 
 --- 
 
