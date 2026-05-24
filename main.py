@@ -18,9 +18,10 @@ def main(data_dir):
     chunks_meta = [] 
     chunk_texts = []
     
-    print("======================================")
-    print("1. DOCUMENT PROCESSING PIPELINE")
-    print("======================================")
+    print("=========================================================")
+    print("STARTING LOCAL AI DOCUMENT PROCESSOR")
+    print("=========================================================")
+    print("Processing files, please wait...\n")
     
     # Loop through every file inside our folder
     for filename in os.listdir(data_dir):
@@ -29,7 +30,7 @@ def main(data_dir):
             continue
             
         file_path = os.path.join(data_dir, filename)
-        print(f"Processing {filename}...")
+        print(f"Reading {filename}...")
         
         # 1. Read the text from the document
         text = read_file(file_path)
@@ -66,32 +67,43 @@ def main(data_dir):
     with open("output.json", "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2)
         
-    print("\nPipeline complete. Output saved to output.json.")
+    print("\n Pipeline complete. Output saved to 'output.json'.")
+    print("\n" + "+" + "-"*28 + "+" + "-"*15 + "+" + "-"*40 + "+")
+    print(f"| {'Filename':<26} | {'Category':<13} | {'Extracted Details':<38} |")
+    print("+" + "-"*28 + "+" + "-"*15 + "+" + "-"*40 + "+")
+    for fname, data in results.items():
+        doc_class = data.get('class', 'Unknown')
+        # Create a tiny snap of data to show in cell
+        details_str = str(data)[:35] + "..." if len(str(data)) > 35 else str(data)
+        print(f"| {fname[:26]:<26} | {doc_class[:13]:<13} | {details_str:<38} |")
+    print("+" + "-"*28 + "+" + "-"*15 + "+" + "-"*40 + "+")
 
     if not chunk_texts:
-        print("No valid text documents found to build search index.")
+        print("\n❌ No valid text documents found to build search index.")
         return
 
     # 5. Build our fast offline search database
-    print("\n======================================")
-    print("2. INITIALIZING DEEP HYBRID SEARCH AI")
-    print("======================================")
-    print("Building chunked local FAISS index... Please hold.")
+    print("\n=========================================================")
+    print("INITIALIZING DEEP HYBRID SEARCH AI")
+    print("=========================================================")
+    print("Building local AI database... Please hold.")
     index = build_index(chunk_texts)
     
-    print("\n*******************************************************")
-    print("* DEEP HYBRID SEARCH READY                            *")
-    print("* Type 'exit', 'bye', or '0' to end the program.      *")
-    print("*******************************************************")
+    print("\n" + "="*70)
+    print("WELCOME TO YOUR LOCAL AI SEARCH ASSISTANT")
+    print("="*70)
+    print("Instructions: Type what you are looking for (e.g., 'total amount').")
+    print("Type 'exit', 'bye', or '0' to safely close the program.")
+    print("="*70)
     
     while True:
         try:
-            query = input("\nSearch Query >> ").strip()
+            query = input("\nYou: ").strip()
         except KeyboardInterrupt:
             break
             
         if query.lower() in ['exit', 'bye', '0', 'quit']:
-            print("Shutting down the system. Goodbye!")
+            print("\nAI: Goodbye! Have a great day!")
             break
             
         if not query:
