@@ -6,12 +6,6 @@
     "phone": "(123) 456-7890",
     "experience_years": 3
   },
-  "invoice1.pdf": {
-    "class": "Unclassifiable"
-  },
-  "invoice2.pdf": {
-    "class": "Unclassifiable"
-  },
   "jnkdnasj.pdf": {
     "class": "Invoice",
     "invoice_number": "INV-000215",
@@ -55,6 +49,9 @@
     "email": "your.name@gmail.com",
     "phone": "(123) 456-7890",
     "experience_years": null
+  },
+  "Transcript.pdf": {
+    "class": "Other"
   },
   "utility_bill_1.txt": {
     "class": "Utility Bill",
