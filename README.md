@@ -2,7 +2,7 @@
  
 > **100% offline. No API keys. No GPU required. Runs entirely on your CPU.**
  
-A complete document intelligence system that ingests PDFs and text files, classifies them automatically, extracts structured data, and lets you search across all your documents using natural language — all through a sleek web UI or the command line.
+A complete document intelligence system that ingests PDFs and text files, classifies them automatically, extracts structured data, and lets you search across all your documents using natural language all through a sleek web UI or the command line.
  
 ---
  
@@ -47,7 +47,7 @@ Local-AI-Document-Processing/
  
 ---
  
-## ❓ Required Questions — Fully Answered
+## ❓ Required Questions Fully Answered
  
 ---
  
@@ -55,7 +55,7 @@ Local-AI-Document-Processing/
  
 **Requirements:** Python 3.10 or higher. A virtual environment is strongly recommended.
  
-**Step 1 — Create and activate a virtual environment:**
+**Step 1 Create and activate a virtual environment:**
  
 ```bash
 # Windows
@@ -67,7 +67,7 @@ python3 -m venv venv
 source venv/bin/activate
 ```
  
-**Step 2 — Install all dependencies:**
+**Step 2 Install all dependencies:**
  
 ```bash
 pip install -r requirements.txt
@@ -96,19 +96,19 @@ There are **two ways** to run this project:
  
 ---
  
-#### ▶️ Option A — Web UI (Recommended)
+#### ▶️ Option A Web UI (Recommended)
  
 This launches a full chat interface in your browser where you can upload documents and search them conversationally.
  
-**Step 1 — Place your documents** inside the `documents/` folder (PDF or TXT files).
+**Step 1 Place your documents** inside the `documents/` folder (PDF or TXT files).
  
-**Step 2 — Start the Flask server:**
+**Step 2 Start the Flask server:**
  
 ```bash
 python app.py
 ```
  
-**Step 3 — Open your browser and go to:**
+**Step 3 Open your browser and go to:**
  
 ```
 http://127.0.0.1:5000
@@ -118,12 +118,12 @@ http://127.0.0.1:5000
 1. On startup, Flask reads every PDF/TXT in `documents/`, classifies and extracts structured fields from each one
 2. Builds a FAISS semantic vector index from all document chunks in memory
 3. Saves extracted results to `output.json`
-4. The web UI opens — you can upload new documents using the sidebar button
+4. The web UI opens you can upload new documents using the sidebar button
 5. Type any natural language query in the chat box (e.g., *"show me invoices with amount over 5000"* or *"find resumes with Python skills"*)
 6. The system returns the top 3 most relevant document matches with snippets
 ---
  
-#### ▶️ Option B — CLI Semantic Search Only
+#### ▶️ Option B CLI Semantic Search Only
  
 If you just want to run a quick one-off search from the terminal without the web UI:
  
@@ -166,7 +166,7 @@ python search.py ./documents "invoices with payment due in January"
 **1. Keyword Density Scoring (Classification)**
 > File: `classifier.py`
  
-Instead of using a heavy ML model for classification, the system scores each document by counting how many weighted vocabulary words from each category appear in the text. Each keyword has a custom weight (e.g., `'sngpl': 5` for Utility Bills, `'resume': 4` for Resumes). The category with the highest total score wins. A minimum threshold of 4.0 points is required — below that, the document is tagged `Other`.
+Instead of using a heavy ML model for classification, the system scores each document by counting how many weighted vocabulary words from each category appear in the text. Each keyword has a custom weight (e.g., `'sngpl': 5` for Utility Bills, `'resume': 4` for Resumes). The category with the highest total score wins. A minimum threshold of 4.0 points is required below that, the document is tagged `Other`.
  
 **2. Geometric & Mathematical Field Extraction (Extractor)**
 > File: `extractor.py`
@@ -174,22 +174,22 @@ Instead of using a heavy ML model for classification, the system scores each doc
 Uses a set of document-class-specific regex patterns. For Invoices, it uses the mathematical assumption that the largest number in the document is usually the Total Amount (`max(money_floats)`). For Resumes, it finds names by looking for short all-alpha lines near the top. For Utility Bills, it hunts for 11–14 digit consumer IDs with negative lookbehind to avoid capturing years from date strings.
  
 **3. Sliding Window Chunking (app.py)**
-> File: `app.py` — `build_search_database()`
+> File: `app.py` `build_search_database()`
  
 Because the `all-MiniLM-L6-v2` model has a 256-word token limit, each document is split into overlapping chunks of **100 words with a 25-word overlap**. This means no context is lost at chunk boundaries. Each chunk also carries metadata (filename, document type, extracted fields) so search results are rich.
  
 **4. Hybrid Search Score (Dense + Sparse)**
-> File: `app.py` — `/api/chat` route
+> File: `app.py` `/api/chat` route
  
 The search ranking combines two signals:
-- **Semantic score**: `1.0 / (1.0 + FAISS_L2_distance)` — higher is better, based on vector similarity
+- **Semantic score**: `1.0 / (1.0 + FAISS_L2_distance)` higher is better, based on vector similarity
 - **Keyword bonus**: `+2.0` if a query token appears in extracted fields or filename, `+1.0` if it appears in the raw chunk text
 This means an exact literal match (like an invoice number `INV-000216`) will be correctly ranked #1 even if the semantic embedding doesn't fully capture it.
  
 **5. FAISS IndexFlatL2**
 > File: `embedder.py`
  
-Uses a flat (brute-force) L2 index — no approximation, 100% accurate results. Appropriate for small-to-medium document sets on CPU without needing GPU or an ANN index like IVF or HNSW.
+Uses a flat (brute-force) L2 index no approximation, 100% accurate results. Appropriate for small-to-medium document sets on CPU without needing GPU or an ANN index like IVF or HNSW.
  
 ---
  
@@ -197,10 +197,10 @@ Uses a flat (brute-force) L2 index — no approximation, 100% accurate results. 
  
 The `templates/index.html` UI (served by Flask) includes:
  
-- **Glassmorphism dark sidebar** — lists all loaded documents
-- **Upload button** — drag & drop or pick multiple PDFs/TXTs; triggers automatic reprocessing
-- **Chat interface** — ask natural language questions, get ranked document results with snippets
-- **Extracted data panel** — view structured JSON output per document
+- **Glassmorphism dark sidebar** lists all loaded documents
+- **Upload button** drag & drop or pick multiple PDFs/TXTs; triggers automatic reprocessing
+- **Chat interface** ask natural language questions, get ranked document results with snippets
+- **Extracted data panel** view structured JSON output per document
 ---
  
 ## 📁 Supported File Types
@@ -228,11 +228,11 @@ The `templates/index.html` UI (served by Flask) includes:
  
 - Model download happens **once** on first run (~90MB), then cached locally
 - Index builds in memory each time the server starts (fast for <500 docs)
-- All processing is **CPU-only** — no CUDA/GPU needed
+- All processing is **CPU-only** no CUDA/GPU needed
 - Tested on Python 3.10+ with Windows, macOS, and Linux
 ---
  
 ## 🙋 Author
  
-**Muhammad Umar Ajmal** — AI Engineer & Generative AI Specialist  
+**Muhammad Umar Ajmal** AI Engineer & Generative AI Specialist  
 [GitHub](https://github.com/UmarAjmal) · [Portfolio](https://muhammadumarajmal.vercel.app/) · [LinkedIn](https://linkedin.com/in/muhammad-umar-ajmal-developer)
