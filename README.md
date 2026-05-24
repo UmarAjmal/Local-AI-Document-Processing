@@ -5,7 +5,12 @@
 A complete document intelligence system that ingests PDFs and text files, classifies them automatically, extracts structured data, and lets you search across all your documents using natural language all through a sleek web UI or the command line.
  
 ---
- 
+
+## 📌 Demo Video Link
+https://drive.google.com/file/d/1ovvkGNhFq_BQKiF73qqK37hyeOIdKfgl/view?usp=sharing
+
+--- 
+
 ## 📌 Project Overview
  
 This pipeline combines classical NLP techniques with modern vector search to process documents locally. It was built to be beginner-friendly (heavy English comments inside every file), lightweight (runs on a basic laptop), and completely private (zero external API calls).
