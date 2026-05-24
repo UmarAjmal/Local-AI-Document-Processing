@@ -1,0 +1,5 @@
+WASA Water Utility
+Account ID: 98765432101
+Billing Period Date: 01.10.2025
+Consumption: 12 units
+Amount Due: Rs. 1200

@@ -1,0 +1,5 @@
+SNGPL Gas Utility Bill
+Account Number: 123456789123
+Date: 15-Jun-2023
+Units Consumed: 150 kwh
+Amount Due: PKR 1500.50

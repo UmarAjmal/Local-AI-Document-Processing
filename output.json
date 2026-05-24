@@ -1,29 +1,15 @@
 {
-  "502997548-SNGPL-Web-Bill.pdf": {
-    "class": "Invoice",
-    "invoice_number": "1836",
-    "date": "04-06-2020",
-    "company": "Name:",
-    "total_amount": 3.00043202244356e+48
-  },
-  "594734864-Sui-Northern-Gas-Bill-Specimen.pdf": {
-    "class": "Invoice",
-    "invoice_number": "600000000000",
-    "date": "07-08-2022",
-    "company": "76-J,JOHAR TOWN, LAHORE.",
-    "total_amount": 600000000000.0
-  },
   "Cashier-Resume-Example.pdf": {
     "class": "Resume",
-    "name": "PROFESSIONAL",
+    "name": "Cashier",
     "email": "your.email@gmail.com",
     "phone": "(123) 456-7890",
     "experience_years": 3
   },
-  "Create Fake Receipt Online _ Free Fake Receipts Generator & Maker.pdf": {
+  "invoice1.pdf": {
     "class": "Unclassifiable"
   },
-  "GitHub - wwandreww_esc_pos_printer_ ESC_POS (thermal, receipt) printing for Flutter & Dart.pdf": {
+  "invoice2.pdf": {
     "class": "Unclassifiable"
   },
   "jnkdnasj.pdf": {
@@ -45,7 +31,7 @@
     "invoice_number": "INV-000216",
     "date": "29-Jan-2026",
     "company": "BEYOND BEAUTY PHARMACY",
-    "total_amount": 3263392082.0
+    "total_amount": 3392082.0
   },
   "nursing-resume-example.pdf": {
     "class": "Resume",
@@ -53,6 +39,9 @@
     "email": "deniceharris@email.com",
     "phone": "(212) 256-1414",
     "experience_years": 4
+  },
+  "SCHOOL SYSTEM - SD.pdf": {
+    "class": "Other"
   },
   "senior-administrative-assistant-resume-example.pdf": {
     "class": "Resume",
@@ -63,9 +52,29 @@
   },
   "teacher-resume-example-template.pdf": {
     "class": "Resume",
-    "name": "(123) 456-7890",
     "email": "your.name@gmail.com",
     "phone": "(123) 456-7890",
     "experience_years": null
+  },
+  "utility_bill_1.txt": {
+    "class": "Utility Bill",
+    "account_number": "123456789123",
+    "date": "15-Jun-2023",
+    "usage_kwh": 150.0,
+    "amount_due": 1500.5
+  },
+  "utility_bill_2.txt": {
+    "class": "Utility Bill",
+    "account_number": "05245678111",
+    "date": "12-04-2024",
+    "usage_kwh": 450.0,
+    "amount_due": 45000.0
+  },
+  "utility_bill_3.txt": {
+    "class": "Utility Bill",
+    "account_number": "98765432101",
+    "date": "01.10.2025",
+    "usage_kwh": 12.0,
+    "amount_due": 1200.0
   }
 }

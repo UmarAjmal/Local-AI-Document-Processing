@@ -14,14 +14,15 @@ def extract_fields(text, doc_class):
     all_dates = re.findall(r'\b(?:\d{1,2}[-/.]\s*[A-Za-z]{3,9}\s*[-/.]\d{2,4}|\d{2,4}[-/.]\d{1,2}[-/.]\d{1,2}|\d{1,2}[-/.]\d{1,2}[-/.]\d{2,4})\b', clean_text)
     all_dates = [d for d in all_dates if len(d) >= 6]
     
-    # Find anything that looks like money anywhere in the document
-    all_money = re.findall(r'(?:Rs\.?|PKR|USD|EUR|GBP|CAD|\$|€|£)?\s*([\d,]+\.\d{1,2}|[\d,]+)\b', clean_text)
+    # Find anything that looks like money anywhere in the document (limiting length to avoid huge ids)
+    all_money = re.findall(r'(?:Rs\.?|PKR|USD|EUR|GBP|CAD|\$|€|£)?\s*([\d,]+\.\d{1,2}|\b\d{1,7}\b)\b', clean_text)
     money_floats = []
     
     # Convert all found money completely into simple numbers
     for m in all_money:
         try: 
-            money_floats.append(float(m.replace(',', '')))
+            val = float(m.replace(',', ''))
+            money_floats.append(val)
         except: 
             pass
     
@@ -61,9 +62,9 @@ def extract_fields(text, doc_class):
         if name_match:
             fields['name'] = name_match.group(1).strip()
         else:
-            # If no clear Name field, take the first short line at the top
+            # If no clear Name field, take the first short line at the top that only contains letters
             for l in lines[:10]:
-                if len(l.split()) <= 4 and not re.search(r'(resume|cv|summary|profile|email|phone)', l, re.IGNORECASE):
+                if len(l.split()) <= 4 and re.match(r'^[A-Za-z\s]+$', l) and not re.search(r'(resume|cv|summary|profile|email|phone|professional|experience)', l, re.IGNORECASE):
                     fields['name'] = l
                     break
 
@@ -81,21 +82,34 @@ def extract_fields(text, doc_class):
         
     # Rules if the document is a Utility Bill
     elif doc_class == 'Utility Bill':
-        # Search for words ending with account, and grab the number
-        acc_match = re.search(r'(?:account|acc(?:t)?|customer|ref|meter)\s*(?:number|num|#|no\.?|id)?\s*[:.\-]?\s*([A-Z0-9\-]{5,20})', clean_text, re.IGNORECASE)
-        fields['account_number'] = acc_match.group(1).strip() if acc_match else None
+        # Search for account/consumer numbers - forcing them to contain digits to avoid capturing words like "Billing"
+        acc_match = re.search(r'(?:account|acc(?:t)?|customer|ref|meter|consumer)\s*(?:number|num|#|no\.?|id)?\s*[:.\-]?\s*([0-9]{9,16})', clean_text, re.IGNORECASE)
+        
+        if acc_match:
+            fields['account_number'] = acc_match.group(1).strip()
+        else:
+            # Fallback: Look for a clean 11 to 14 digit number used as consumer ID anywhere
+            fallback_acc = re.search(r'\b(\d{11,14})\b', clean_text)
+            fields['account_number'] = fallback_acc.group(1) if fallback_acc else None
         
         # Grab the first date inside the bill
         fields['date'] = all_dates[0] if all_dates else None
         
-        # Grab the number that comes before kwh or units
-        usage_match = re.search(r'([\d,]+(?:\.\d+)?)\s*(?:kwh|units|units consumed|reading)\b', clean_text, re.IGNORECASE)
+        # Grab the number that comes before kwh or units or mmbtu
+        # Use negative lookbehind (?<![-/\w]) to ensure we do not grab a year from a date like -2023 or /2024
+        usage_match = re.search(r'(?<![-/\w])([\d,]+(?:\.\d+)?)\s*(?:kwh|units|units consumed|reading|mmbtu|hm3)\b', clean_text, re.IGNORECASE)
         try: 
             fields['usage_kwh'] = float(usage_match.group(1).replace(',', '')) if usage_match else None
         except: 
             fields['usage_kwh'] = None
         
-        # Rule of math again. The highest money found relates to the bill amount due
-        fields['amount_due'] = max(money_floats) if money_floats else None
+        # Look for explicit payable amounts first
+        explicit_due = re.search(r'(?:payable within due date|amount due|total payable|current bill)[\s:.\-A-Za-z()]*([\d,]+(?:\.\d{1,2})?)', clean_text, re.IGNORECASE)
+        if explicit_due:
+            try: fields['amount_due'] = float(explicit_due.group(1).replace(',', ''))
+            except: fields['amount_due'] = max(money_floats) if money_floats else None
+        else:
+            # Rule of math again. The highest money found relates to the bill amount due
+            fields['amount_due'] = max(money_floats) if money_floats else None
             
     return fields

@@ -68,15 +68,30 @@ def main(data_dir):
         json.dump(results, f, indent=2)
         
     print("\n Pipeline complete. Output saved to 'output.json'.")
-    print("\n" + "+" + "-"*28 + "+" + "-"*15 + "+" + "-"*40 + "+")
-    print(f"| {'Filename':<26} | {'Category':<13} | {'Extracted Details':<38} |")
-    print("+" + "-"*28 + "+" + "-"*15 + "+" + "-"*40 + "+")
+    print("\n" + "-"*110)
+    print(f"| {'Filename':<35} | {'Document Type':<15} | {'Fields Extracted':<50} |")
+    print("-" + "-"*109)
+    
     for fname, data in results.items():
-        doc_class = data.get('class', 'Unknown')
-        # Create a tiny snap of data to show in cell
-        details_str = str(data)[:35] + "..." if len(str(data)) > 35 else str(data)
-        print(f"| {fname[:26]:<26} | {doc_class[:13]:<13} | {details_str:<38} |")
-    print("+" + "-"*28 + "+" + "-"*15 + "+" + "-"*40 + "+")
+        doc_class = data.get('class', 'Other')
+        
+        # Format the extracted fields nicely based on document type
+        if doc_class == 'Invoice':
+            details_str = f"Inv: {data.get('invoice_number')}, Date: {data.get('date')}, Co: {data.get('company')}, Total: {data.get('total_amount')}"
+        elif doc_class == 'Resume':
+            details_str = f"Name: {data.get('name')}, Email: {data.get('email')}, Ph: {data.get('phone')}, Exp: {data.get('experience_years')}"
+        elif doc_class == 'Utility Bill':
+            details_str = f"Acc: {data.get('account_number')}, Date: {data.get('date')}, kWh: {data.get('usage_kwh')}, Due: {data.get('amount_due')}"
+        else:
+            details_str = "No extraction required"
+            
+        # Cut strings if they are too long so the table doesn't break
+        fname_disp = fname[:32] + "..." if len(fname) > 35 else fname
+        details_disp = details_str[:47] + "..." if len(details_str) > 50 else details_str
+        
+        print(f"| {fname_disp:<35} | {doc_class:<15} | {details_disp:<50} |")
+        
+    print("-" * 110)
 
     if not chunk_texts:
         print("\n❌ No valid text documents found to build search index.")
